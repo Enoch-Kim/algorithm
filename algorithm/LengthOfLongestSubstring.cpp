@@ -85,5 +85,4 @@ int main() {
     Solution S;
     int maxNum = S.lengthOfLongestSubstring(s);
     cout << maxNum << endl;
-    cout << int(' ');
 }
