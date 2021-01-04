@@ -1,55 +1,49 @@
 /*
 https://programmers.co.kr/learn/courses/30/lessons/64065
 */
+
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 using namespace std;
 
 vector<int> solution(string s) {
     vector<int> answer;
-    vector<vector<int>> vMap(501, vector<int>(0));
+    unordered_map<int, int> numMap; // num : cnt
     
-    
-    int i=1;
-    while(i < s.size()-1){
-        if(s[i] != '{'){
-            throw "Invalid Data Set";
-        }
-        vector<int> temp(0);
-
-        i++;            // to start
-        int j = i+1;      // point
-        int cnt = 0;
-        while(j < s.size()-1 && s[j] != '}'){
-            if(s[j] == ','){
-                int num = stoi(s.substr(i, j-i));
-                temp.push_back(num);
-                i = j+1;
+    int left = 2;    // 괄호 무시
+    while(left < s.size()-1){
+        int right = s.find('}', left);
+        
+        if(right == string::npos) break;
+        
+        int idx = left;
+        while(idx < right){
+            if(s[idx] == ','){
+                int num = stoi(s.substr(left,idx-left));
+                numMap[num]++;
+                left=idx+1;
             }
-            j++;
+            idx++;
         }
-        int num = stoi(s.substr(i, j-i));
-        temp.push_back(num);
-        vMap[temp.size()] = temp;
-
-        i=j+2;
+        int num = stoi(s.substr(left, right - left));
+        numMap[num]++;
+        
+        left = right+3;
     }
     
-    i = 1;
-    vector<bool> numMap(100001, false);
-    
-    while(i<500 && vMap[i].size()){
-        for(int j=0; j<vMap[i].size(); j++){
-            int temp = vMap[i][j];
-            if(!numMap[temp]){
-                numMap[temp] = true;
-                answer.push_back(temp);
-                break; 
-            }
-        }
-        i++;
+    int size = 0;
+    for(auto num : numMap){
+        size = max(size, num.second);
     }
+    
+    answer = vector<int>(size, 0);
+    
+    for(auto num : numMap){
+        answer[size - (num.second)] = num.first;
+    }
+    
     
     return answer;
 }
