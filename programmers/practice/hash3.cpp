@@ -10,10 +10,16 @@ using namespace std;
 
 int solution(vector<vector<string>> clothes) {
     int answer = 1;
-    unordered_map<string, int> m;
-    for(int i=0; i<clothes.size(); ++i)
-        m[clothes[i][1]]++;
-    for(auto x : m)
-        answer*=x.second+1;
-    return answer-1;    // exclude all empty
+    
+    unordered_map<string, int> typeMap;
+    
+    for(auto c : clothes){
+        typeMap[c[1]]++;
+    }
+    
+    for(auto t : typeMap){
+        answer *= t.second+1;
+    }
+    
+    return answer-1;
 }

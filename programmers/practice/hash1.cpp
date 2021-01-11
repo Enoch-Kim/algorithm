@@ -10,22 +10,22 @@ using namespace std;
 
 string solution(vector<string> participant, vector<string> completion) {
     string answer = "";
-    unordered_map<string, int> userMap;
+    
+    unordered_map<string, bool> playerMap;  // 선수들의 xor 결과를 담을 해시테이블
     
     for(auto p : participant){
-        userMap[p]++;
+        playerMap[p] ^= 1;
     }
     
     for(auto c : completion){
-        userMap[c]--;
+        playerMap[c] ^= 1;
     }
     
-    for(auto u : userMap){
-        if(u.second){
-            answer = u.first;
+    for(auto p : playerMap){
+        if(p.second) {
+            answer = p.first;        // 결국 홀수로 남은 선수가 결과
             break;
-        }
+        } 
     }
-    
     return answer;
 }

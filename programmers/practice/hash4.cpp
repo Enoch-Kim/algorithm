@@ -5,40 +5,54 @@ https://programmers.co.kr/learn/courses/30/lessons/42579
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <utility>
 #include <algorithm>
-
 
 using namespace std;
 
+bool compareFunc(pair<string, int>& a, pair<string, int>& b){
+    return a.second > b.second;
+}
+
+bool compareFunc2(pair<int, int>& a, pair<int, int>& b){
+    if(a.second == b.second){
+        return a.first < b.first;
+    } else {
+        return a.second > b.second;    
+    }
+    
+}
 
 vector<int> solution(vector<string> genres, vector<int> plays) {
     vector<int> answer;
-    int size = genres.size();
-    unordered_map<string, int> sumMap;
-    unordered_map<string, vector<pair<int,int>>> genreMap;
-    vector<pair<int,string>> veri;
     
-    string curG;
-    int curP;
-    for(int i=0; i<size; ++i){
-        curG = genres[i];
-        curP = plays[i];
-        sumMap[curG]+=curP;
-        genreMap[curG].push_back({curP,size-i});
+    unordered_map<string, int> playMap;                      // genre : total play
+    unordered_map<string, vector<pair<int,int>>> musicMap;   // genre : music<idx, play>
+    
+    for(int i=0; i<genres.size(); i++){
+        string genre = genres[i];
+        int play = plays[i];
+        playMap[genre] += play;
+        musicMap[genre].push_back({i,play});
     }
-    for(auto x : sumMap){
-        veri.push_back({x.second,x.first});
+    
+    vector<pair<string,int>> playArr;
+    
+    for(auto genre : playMap){
+        playArr.push_back(genre);
     }
-    sort(veri.rbegin(), veri.rend());
-    for(int i=0; i<veri.size(); i++){
-        string g = veri[i].second;
-        if(genreMap[g].size() == 1){
-            answer.push_back(size-genreMap[g][0].second);
-            continue;
+    
+    sort(playArr.begin(), playArr.end(), compareFunc);
+    
+    for(int i=0; i<playArr.size(); i++){
+        string genre = playArr[i].first;
+        
+        sort(musicMap[genre].begin(), musicMap[genre].end(), compareFunc2);
+        
+        for(int j=0; j<musicMap[genre].size() && j<2; j++){
+            answer.push_back(musicMap[genre][j].first);
         }
-        sort(genreMap[g].rbegin(), genreMap[g].rend());
-        answer.push_back(size-genreMap[g][0].second);
-        answer.push_back(size-genreMap[g][1].second);
     }
+    
     return answer;
 }
