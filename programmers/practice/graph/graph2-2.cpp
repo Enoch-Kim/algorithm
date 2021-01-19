@@ -23,13 +23,29 @@ int solution(int n, vector<vector<int>> results) {
             if(resultMap[up][mid] == 0){
                 continue;
             }
+            // up > mid
             for(int down=1; down<=n; down++){
-                if(resultMap[mid][down]){
+                if(resultMap[mid][down]){ // up > mid > down
                     resultMap[up][down] = 1;
                 }
             }
         }
     }
+
+    // 이건 안됨.. side effect가 발생함..
+    // for(int up=1; up<=n; up++){
+    //     for(int mid=1; mid<=n; mid++){
+    //         if(resultMap[up][mid] == 0){
+    //             continue;
+    //         }
+    //         // up > mid
+    //         for(int down=1; down<=n; down++){
+    //             if(resultMap[mid][down]){ // up > mid > down
+    //                 resultMap[up][down] = 1;
+    //             }
+    //         }
+    //     }
+    // }
     
     for(int i=1; i<=n; i++){
         int cnt = 0;
