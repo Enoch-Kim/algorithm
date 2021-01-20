@@ -5,6 +5,8 @@
 
 using namespace std;
 
+
+// comp 구조체는 sort 와 반대로 동작..ㅠㅠ
 struct comp{
     bool operator()(vector<int>& a, vector<int>& b){
         if(a[2] == b[2]){
