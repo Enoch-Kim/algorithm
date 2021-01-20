@@ -4,11 +4,11 @@
 
 using namespace std;
 
-class MinimumSpanningTree{
+class Kruskal{
     
     public:
-        MinimumSpanningTree(int n, vector<vector<int>> edges)
-        : n(n), edges(edges), tree(vector<int>(n, -1)), spanningTree(vector<vector<int>>(0)) {
+        Kruskal(int n, vector<vector<int>> edges)
+        : n(n), edges(edges), setPtrs(vector<int>(n, -1)), spanningTree(vector<vector<int>>(0)) {
             sort(this -> edges.begin(), this -> edges.end(), compareFunc);
         }
 
@@ -23,7 +23,7 @@ class MinimumSpanningTree{
             return edge1[2] < edge2[2];
         }
 
-        void Kruskal(){
+        void GetMinimumSpanningTree(){
             int cnt = 0;
 
             int i=0;
@@ -46,8 +46,8 @@ class MinimumSpanningTree{
     private:
 
         int findRoot(int a){
-            while(tree[a] != -1){
-                a = tree[a];
+            while(setPtrs[a] != -1){
+                a = setPtrs[a];
             }
 
             return a;
@@ -58,7 +58,7 @@ class MinimumSpanningTree{
             int rootB = findRoot(b);
 
             if(rootA != rootB){
-                tree[rootA] = rootB;
+                setPtrs[rootA] = rootB;
                 return true;
             }
             return false;
@@ -66,7 +66,7 @@ class MinimumSpanningTree{
 
         int n;  // vertics count
         vector<vector<int>> edges;  // [node A, node B, weight]
-        vector<int> tree;
+        vector<int> setPtrs;
         vector<vector<int>> spanningTree;
 };
 
@@ -83,8 +83,8 @@ int main() {
         {6, 3, 18},
         {6, 4, 25}
     };
-    MinimumSpanningTree mst = MinimumSpanningTree(n, edges);
+    Kruskal mst = Kruskal(n, edges);
 
-    mst.Kruskal();
+    mst.GetMinimumSpanningTree();
     mst.PrintTree();
 }
