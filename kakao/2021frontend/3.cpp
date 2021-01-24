@@ -51,7 +51,7 @@ function solution(next_student) {
 
         for(let i=0; i<readArr.length; i++){
             let temp = readArr[i];
-            // 사이클이 있다면 해당 사이클부터는 카운트 갖게함
+            // 사이클이 있다면 해당 사이클부터는 카운트 같게함
             if(temp == cycleStu){
                 for(let j=i; j<readArr.length; j++){
                     visitMap.set(readArr[j], readCnt);
